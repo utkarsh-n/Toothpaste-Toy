@@ -1,0 +1,83 @@
+name: ToothpasteToy
+options:
+  bundleIdPrefix: com.utkarsh
+  deploymentTarget:
+    iOS: "27.0"
+  xcodeVersion: "27.0"
+  createIntermediateGroups: true
+packages:
+  LabKit:
+    path: ../LabKit
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+targets:
+  ToothpasteToy:
+    type: application
+    platform: iOS
+    sources:
+      - path: ToothpasteToy
+        excludes:
+          # Metro Station's starter screen: a composition reference, not part of the app.
+          - "Design/Metro/UsageExample.swift"
+    dependencies:
+      - package: LabKit
+        products: [LabKitCore, LabKitSensors, LabKitFeedback, LabKitUI, LabKitRender, LabKitShaderTypes, LabKitRigid, LabKitMPM, LabKitMPMTypes, Wave, LabKitMetro]
+    scheme:
+      testTargets: [ToothpasteToyTests, ToothpasteToyUITests]
+    info:
+      path: ToothpasteToy/Info.plist
+      properties:
+        CFBundleDisplayName: Toothpaste Toy
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSMicrophoneUsageDescription: "Toothpaste Toy listens so sound can shake the paste. Nothing is recorded or kept."
+        NSMotionUsageDescription: "Toothpaste Toy reads the motion sensors so the paste can feel your tilts and shakes. Nothing leaves this phone."
+        UIFileSharingEnabled: true
+        LSSupportsOpeningDocumentsInPlace: false
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UIUserInterfaceStyle: Dark
+        UIStatusBarHidden: true
+        CADisableMinimumFrameDurationOnPhone: true
+        ITSAppUsesNonExemptEncryption: false
+        LSApplicationCategoryType: public.app-category.entertainment
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.toothpastetoy
+        TARGETED_DEVICE_FAMILY: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        MTL_FAST_MATH: YES
+        MTL_HEADER_SEARCH_PATHS: "$(SRCROOT)/../LabKit/Sources/LabKitRender/Shaders $(SRCROOT)/../LabKit/Sources/LabKitShaderTypes/include $(SRCROOT)/../LabKit/Sources/LabKitMPMTypes/include"
+        SUPPORTS_MACCATALYST: NO
+  ToothpasteToyTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [ToothpasteToyTests]
+    dependencies:
+      - target: ToothpasteToy
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.toothpastetoy.tests
+  ToothpasteToyUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [ToothpasteToyUITests]
+    dependencies:
+      - target: ToothpasteToy
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.toothpastetoy.uitests
+        TEST_TARGET_NAME: ToothpasteToy
